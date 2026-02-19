@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ResolveNow | Complaint & Resolution Platform</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <!-- Google Fonts: Inter for modern, professional look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Smooth scrolling for anchor links */
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Custom animations for better UX */
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full bg-white shadow-lg z-50 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-indigo-600 flex items-center">
+                <i class="fa-solid fa-scale-balanced mr-2"></i>ResolveNow
+            </a>
+            <div class="hidden md:flex space-x-8 text-sm font-medium">
+                <a href="#platform" class="hover:text-indigo-600 transition duration-300">Platform</a>
+                <a href="#workflow" class="hover:text-indigo-600 transition duration-300">How It Works</a>
+                <a href="#governance" class="hover:text-indigo-600 transition duration-300">Governance</a>
+                <a href="#security" class="hover:text-indigo-600 transition duration-300">Security</a>
+                <a href="#contact" class="hover:text-indigo-600 transition duration-300">Contact</a>
+            </div>
+            <button class="md:hidden text-gray-600 focus:outline-none" id="menu-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-white border-t border-gray-200" id="mobile-menu">
+            <a href="#platform" class="block px-6 py-3 hover:bg-gray-100">Platform</a>
+            <a href="#workflow" class="block px-6 py-3 hover:bg-gray-100">How It Works</a>
+            <a href="#governance" class="block px-6 py-3 hover:bg-gray-100">Governance</a>
+            <a href="#security" class="block px-6 py-3 hover:bg-gray-100">Security</a>
+            <a href="#contact" class="block px-6 py-3 hover:bg-gray-100">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-24 bg-gradient-to-br from-indigo-600 via-blue-600 to-purple-700 text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-10"></div>
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-center relative z-10">
+            <div class="fade-in">
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-6">
+                    Streamline Complaint Resolution with Confidence
+                </h1>
+                <p class="text-lg md:text-xl text-indigo-100 mb-8 leading-relaxed">
+                    Empower your institution with ResolveNow: a transparent, intelligent platform for managing complaints, ensuring accountability, and driving timely resolutions. From submission to closure, every step is secure and efficient.
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="auth.html" class="bg-white text-indigo-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition duration-300 shadow-lg">
+                        Start Resolving Today
+                    </a>
+                    <a href="#platform" class="border-2 border-white px-8 py-4 rounded-lg hover:bg-white hover:text-indigo-600 transition duration-300">
+                        Explore Features
+                    </a>
+                </div>
+            </div>
+            <div class="hidden md:block fade-in">
+                <img src="https://illustrations.popsy.co/blue/customer-support.svg" alt="ResolveNow Illustration" class="w-full h-auto">
+            </div>
+        </div>
+    </section>
+
+    <!-- Platform Section -->
+    <section id="platform" class="py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-800">
+                A Platform Built for Transparency and Efficiency
+            </h2>
+            <p class="text-gray-600 leading-relaxed max-w-3xl mx-auto mb-16">
+                ResolveNow centralizes the complaint lifecycle, providing a unified system for submission, tracking, and resolution. Experience unparalleled visibility, intelligent prioritization, and actionable insights to enhance institutional performance.
+            </p>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-10">
+            <div class="p-8 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-lg transition duration-300 fade-in">
+                <i class="fa-solid fa-layer-group text-5xl text-indigo-600 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-3 text-gray-800">Centralized Intake</h3>
+                <p class="text-gray-600">
+                    Seamlessly collect complaints with structured forms, categories, and attachments for comprehensive documentation.
+                </p>
+            </div>
+
+            <div class="p-8 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-lg transition duration-300 fade-in">
+                <i class="fa-solid fa-ranking-star text-5xl text-blue-600 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-3 text-gray-800">Intelligent Prioritization</h3>
+                <p class="text-gray-600">
+                    Leverage AI-driven insights to prioritize issues based on severity, impact, and urgency for faster resolutions.
+                </p>
+            </div>
+
+            <div class="p-8 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-lg transition duration-300 fade-in">
+                <i class="fa-solid fa-chart-line text-5xl text-green-600 mb-4"></i>
+                <h3 class="text-xl font-semibold mb-3 text-gray-800">Operational Insights</h3>
+                <p class="text-gray-600">
+                    Access real-time analytics on resolution times, team performance, and trends to optimize processes.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow Section -->
+    <section id="workflow" class="py-24 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 text-gray-800">
+                Seamless End-to-End Resolution Process
+            </h2>
+
+            <div class="grid md:grid-cols-4 gap-10 text-center">
+                <div class="fade-in">
+                    <div class="bg-indigo-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-user-check text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold mb-2 text-gray-800">Submit Complaint</h4>
+                    <p class="text-gray-600 text-sm">
+                        Users easily submit detailed complaints with evidence through an intuitive interface.
+                    </p>
+                </div>
+
+                <div class="fade-in">
+                    <div class="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-user-gear text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold mb-2 text-gray-800">Assign & Route</h4>
+                    <p class="text-gray-600 text-sm">
+                        Automated routing ensures complaints reach the appropriate teams or authorities promptly.
+                    </p>
+                </div>
+
+                <div class="fade-in">
+                    <div class="bg-green-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-clock text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold mb-2 text-gray-800">Track & Resolve</h4>
+                    <p class="text-gray-600 text-sm">
+                        Monitor progress with defined timelines and collaborative tools for effective resolution.
+                    </p>
+                </div>
+
+                <div class="fade-in">
+                    <div class="bg-emerald-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <i class="fa-solid fa-circle-check text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold mb-2 text-gray-800">Close & Feedback</h4>
+                    <p class="text-gray-600 text-sm">
+                        Finalize resolutions with user feedback and comprehensive audit trails.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Governance Section -->
+    <section id="governance" class="py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-800">
+                Institutional Governance with Accountability
+            </h2>
+            <p class="text-gray-600 max-w-3xl mx-auto mb-14 leading-relaxed">
+                ResolveNow integrates robust governance features, including role-based access, automated escalations, and full auditability to ensure compliance and trust.
+            </p>
+
+            <div class="grid md:grid-cols-3 gap-10">
+                <div class="fade-in">
+                    <i class="fa-solid fa-scale-balanced text-5xl text-indigo-600 mb-3"></i>
+                    <h3 class="font-semibold text-gray-800">Clear Ownership</h3>
+                    <p class="text-gray-600 text-sm">
+                        Assign dedicated owners to each complaint for streamlined responsibility and follow-up.
+                    </p>
+                </div>
+
+                <div class="fade-in">
+                    <i class="fa-solid fa-arrow-up-right-dots text-5xl text-blue-600 mb-3"></i>
+                    <h3 class="font-semibold text-gray-800">Automated Escalation</h3>
+                    <p class="text-gray-600 text-sm">
+                        Prevent delays with intelligent escalation protocols based on predefined rules.
+                    </p>
+                </div>
+
+                <div class="fade-in">
+                    <i class="fa-solid fa-eye text-5xl text-green-600 mb-3"></i>
+                    <h3 class="font-semibold text-gray-800">Full Transparency</h3>
+                    <p class="text-gray-600 text-sm">
+                        Maintain complete visibility into complaint status, history, and outcomes for all stakeholders.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section id="security" class="py-24 bg-gray-900 text-gray-200">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-10 text-white">
+                Uncompromising Security and Compliance
+            </h2>
+
+            <div class="grid md:grid-cols-3 gap-10">
+                <div class="fade-in">
+                    <i class="fa-solid fa-lock text-5xl text-indigo-400 mb-3"></i>
+                    <h3 class="font-semibold text-white">Secure Authentication</h3>
+                    <p class="text-gray-400 text-sm">
+                        Multi-factor authentication and encryption safeguard user data and interactions.
+                    </p>
+                </div>
+
+                <div class="fade-in">
+                    <i class="fa-solid fa-shield-halved text-5xl text-blue-400 mb-3"></i>
+                    <h3 class="font-semibold text-white">Role-Based Permissions</h3>
+                    <p class="text-gray-400 text-sm">
+                        Granular access controls ensure data is only visible to authorized personnel.
+                    </p>
+                </div>
+
+                <div class="fade-in">
+                    <i class="fa-solid fa-database text-5xl text-green-400 mb-3"></i>
+                    <h3 class="font-semibold text-white">Data Integrity & Auditing</h3>
+                    <p class="text-gray-400 text-sm">
+                        Immutable records and compliance-ready audits protect against tampering and ensure accountability.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section (Added for User-Friendliness) -->
+    <section class="py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-16 text-gray-800">Trusted by Leading Institutions</h2>
+            <div class="grid md:grid-cols-2 gap-10">
+                <div class="p-6 bg-gray-50 rounded-lg shadow-md fade-in">
+                    <p class="text-gray-600 italic mb-4">"ResolveNow transformed our complaint handling process, making it faster and more transparent."</p>
+                    <p class="font-semibold text-gray-800">- Jane Doe, Compliance Officer</p>
+                </div>
+                <div class="p-6 bg-gray-50 rounded-lg shadow-md fade-in">
+                    <p class="text-gray-600 italic mb-4">"The intelligent prioritization feature has significantly improved our resolution times."</p>
+                    <p class="font-semibold text-gray-800">- John Smith, Operations Manager</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-gray-100">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-800">Get in Touch</h2>
+            <p class="text-gray-600 mb-8">Ready to enhance your complaint resolution? Contact us for a demo or more information.</p>
+            <a href="mailto:contact@resolvenow.com" class="bg-indigo-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300">
+                Contact Us
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-gray-400 py-12">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="mb-3 text-sm">
+                © 2026 ResolveNow. All rights reserved.
+            </p>
+            <p class="text-sm text-gray-500 mb-6">
+                Crafted with <span class="text-red-500">❤️</span> by <span class="text-gray-300 font-medium">Rohit, Tanmay, Shubhranshu, Diptiranjan</span>
+            </p>
+            <div class="flex justify-center space-x-6 text-lg">
+                <a href="https://github.com/your-github-username" target="_blank" class="hover:text-white transition duration-300">
+                    <i class="fa-brands fa-github"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/your-linkedin-username" target="_blank" class="hover:text-white transition duration-300">
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+                <a href="mailto:contact@resolvenow.com" class="hover:text-white transition duration-300">
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu Toggle -->
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+
+</body>
+
+</html>
