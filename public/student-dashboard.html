@@ -48,7 +48,7 @@
       </div>
 
       <!-- Stats Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
         <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
           <div class="flex items-center justify-between">
             <div>
@@ -76,6 +76,16 @@
               <h3 id="pendingCount" class="text-3xl font-bold text-orange-500 mt-2">0</h3>
             </div>
             <i class="fa-solid fa-clock text-orange-500 text-2xl"></i>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-gray-500 text-sm font-medium">Reverted</p>
+              <h3 id="revertedCount" class="text-3xl font-bold text-purple-600 mt-2">0</h3>
+            </div>
+            <i class="fa-solid fa-rotate-left text-purple-500 text-2xl"></i>
           </div>
         </div>
 
@@ -121,18 +131,24 @@
               <option value="assigned">Assigned</option>
               <option value="in-progress">In Progress</option>
               <option value="resolved">Resolved</option>
-              <option value="rejected">Rejected</option>
+              <option value="reverted">Reverted</option>
               <option value="withdrawn">Withdrawn</option>
             </select>
             <select id="categoryFilter"
               class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
               <option value="">All Categories</option>
-              <option value="Water">Water</option>
-              <option value="Electricity">Electricity</option>
-              <option value="Internet">Internet</option>
-              <option value="Maintenance">Maintenance</option>
-              <option value="Cleanliness">Cleanliness</option>
+              <option value="Plumbing & Water">Plumbing & Water</option>
+              <option value="Electrical">Electrical</option>
+              <option value="Internet & Network">Internet & Network</option>
+              <option value="Room Maintenance">Room Maintenance</option>
+              <option value="Housekeeping & Cleanliness">Housekeeping & Cleanliness</option>
+              <option value="Common Area Facilities">Common Area Facilities</option>
+              <option value="Pest Control">Pest Control</option>
+              <option value="Mess & Food Services">Mess & Food Services</option>
+              <option value="Security & Safety">Security & Safety</option>
+              <option value="Administrative Issues">Administrative Issues</option>
               <option value="Other">Other</option>
+
             </select>
             <select id="priorityFilter"
               class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
@@ -184,62 +200,104 @@
     <div class="flex items-center justify-center min-h-screen p-4">
       <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
         <div class="p-6">
+
+          <!-- Modal Header -->
           <div class="flex justify-between items-center mb-6">
-            <h3 class="text-2xl font-semibold text-gray-800">Raise New Complaint</h3>
-            <button onclick="closeRaiseComplaintModal()" class="text-gray-400 hover:text-gray-600">
+            <h3 id="modalTitle" class="text-2xl font-semibold text-gray-800">
+              Raise New Complaint
+            </h3>
+            <button onclick="closeRaiseComplaintModal()" class="text-gray-400 hover:text-gray-600 transition">
               <i class="fa-solid fa-times text-xl"></i>
             </button>
           </div>
+
+          <!-- Complaint Form -->
           <form id="raiseComplaintForm" class="space-y-4">
+
+            <!-- Title -->
             <div>
-              <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Complaint Title</label>
-              <input type="text" id="title" name="title"
-                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                placeholder="e.g., Water leakage in room 101" required>
-            </div>
-            <div>
-              <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-              <select id="category" name="category"
-                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              <label for="title" class="block text-sm font-medium text-gray-700 mb-1">
+                Complaint Title
+              </label>
+              <input type="text" id="title" name="title" class="w-full border border-gray-300 rounded-lg px-3 py-2 
+              focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="e.g., Water leakage in Room 101"
                 required>
+            </div>
+
+            <!-- Category -->
+            <div>
+              <label for="category" class="block text-sm font-medium text-gray-700 mb-1">
+                Category
+              </label>
+              <select id="category" name="category" class="w-full border border-gray-300 rounded-lg px-3 py-2 
+              focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+
                 <option value="">Select a category</option>
-                <option value="Water">Water</option>
-                <option value="Electricity">Electricity</option>
-                <option value="Internet">Internet</option>
-                <option value="Maintenance">Maintenance</option>
-                <option value="Cleanliness">Cleanliness</option>
+                <!-- Infrastructure -->
+                <option value="Plumbing & Water">Plumbing & Water</option>
+                <option value="Electrical">Electrical</option>
+                <option value="Internet & Network">Internet & Network</option>
+                <option value="Room Maintenance">Room Maintenance</option>
+                <!-- Facilities -->
+                <option value="Housekeeping & Cleanliness">Housekeeping & Cleanliness</option>
+                <option value="Pest Control">Pest Control</option>
+                <option value="Common Area Facilities">Common Area Facilities</option>
+                <!-- Administration -->
+                <option value="Mess & Food Services">Mess & Food Services</option>
+                <option value="Security & Safety">Security & Safety</option>
+                <option value="Administrative Issues">Administrative Issues</option>
+                <!-- Other -->
                 <option value="Other">Other</option>
+
               </select>
             </div>
+
+            <!-- Priority -->
             <div>
-              <label for="priority" class="block text-sm font-medium text-gray-700 mb-1">Priority Level</label>
-              <select id="priority" name="priority"
-                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                required>
+              <label for="priority" class="block text-sm font-medium text-gray-700 mb-1">
+                Priority Level
+              </label>
+              <select id="priority" name="priority" class="w-full border border-gray-300 rounded-lg px-3 py-2 
+              focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
                 <option value="low">Low - Minor issue, can wait</option>
                 <option value="medium">Medium - Needs attention soon</option>
                 <option value="high">High - Urgent, affects daily life</option>
               </select>
+              <p class="text-xs text-gray-500 mt-1">
+                Priority is auto-suggested based on complaint details. You may change it if needed.
+              </p>
             </div>
+
+            <!-- Description -->
             <div>
-              <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Detailed Description</label>
-              <textarea id="description" name="description" rows="4"
-                class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                placeholder="Please provide a clear and detailed description of the issue, including when it started, its impact, and any relevant details."
+              <label for="description" class="block text-sm font-medium text-gray-700 mb-1">
+                Detailed Description
+              </label>
+              <textarea id="description" name="description" rows="4" class="w-full border border-gray-300 rounded-lg px-3 py-2 
+              focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Provide a clear description including when the issue started and how it affects you."
                 required></textarea>
             </div>
-            <div class="flex justify-end gap-3">
-              <button type="button" onclick="closeRaiseComplaintModal()"
-                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">Cancel</button>
-              <button type="submit"
-                class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">Submit
-                Complaint</button>
+
+            <!-- Buttons -->
+            <div class="flex justify-end gap-3 pt-2">
+              <button type="button" onclick="closeRaiseComplaintModal()" class="px-4 py-2 border border-gray-300 text-gray-700 
+              rounded-lg hover:bg-gray-50 transition">
+                Cancel
+              </button>
+
+              <button type="submit" id="submitBtn" class="px-4 py-2 bg-indigo-600 text-white 
+              rounded-lg hover:bg-indigo-700 transition">
+                Submit Complaint
+              </button>
             </div>
+
           </form>
         </div>
       </div>
     </div>
   </div>
+
 
   <!-- View Complaint Modal -->
   <div id="viewComplaintModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
@@ -283,6 +341,11 @@
               <p class="text-sm text-gray-500 font-medium mb-2">Description</p>
               <p id="viewDescription" class="text-gray-800 leading-relaxed"></p>
             </div>
+            <div id="revertReasonBox" class="hidden bg-purple-50 border border-purple-200 p-3 rounded-lg mt-3">
+              <p class="text-sm font-medium text-red-700">Clarification Required:</p>
+              <p id="revertReasonText" class="text-sm text-purple-600 mt-1"></p>
+            </div>
+
           </div>
         </div>
       </div>
@@ -302,13 +365,14 @@
     let allComplaints = [];
     let currentPage = 1;
     const itemsPerPage = 9; // Adjust as needed
+    let editingComplaintId = null;
 
     const statusBadge = (status) => {
       const classes = {
         resolved: "bg-green-100 text-green-600",
         "in-progress": "bg-yellow-100 text-yellow-600",
         assigned: "bg-blue-100 text-blue-600",
-        rejected: "bg-red-100 text-red-600",
+        reverted: "bg-purple-100 text-purple-600",
         withdrawn: "bg-gray-100 text-gray-600",
         pending: "bg-gray-100 text-gray-600"
       };
@@ -338,6 +402,7 @@
         document.getElementById("resolvedCount").textContent = allComplaints.filter(c => c.status === "resolved").length;
         document.getElementById("pendingCount").textContent = allComplaints.filter(c => ["pending", "assigned", "in-progress"].includes(c.status)).length;
         document.getElementById("withdrawnCount").textContent = allComplaints.filter(c => c.status === "withdrawn").length;
+        document.getElementById("revertedCount").textContent = allComplaints.filter(c => c.status === "reverted").length;
 
         applyFiltersAndRender();
       } catch (err) {
@@ -434,7 +499,7 @@
             <button onclick="openViewComplaintModal('${c._id}')" class="flex-1 bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition text-sm font-medium">
               <i class="fa-solid fa-eye mr-1"></i> View Details
             </button>
-            ${c.status === "pending" ? `
+           ${["pending", "reverted"].includes(c.status) ? `
               <button onclick="editComplaint('${c._id}')" class="flex-1 bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600 transition text-sm font-medium">
                 <i class="fa-solid fa-edit mr-1"></i> Edit
               </button>
@@ -504,23 +569,43 @@
       }
     });
 
+    // function openRaiseComplaintModal() {
+    //   document.getElementById("raiseComplaintModal").classList.remove("hidden");
+    // }
     function openRaiseComplaintModal() {
+      editingComplaintId = null;
+
+      document.getElementById("modalTitle").textContent = "Raise New Complaint";
+      document.getElementById("submitBtn").textContent = "Submit Complaint";
+
+      document.getElementById("raiseComplaintForm").reset();
       document.getElementById("raiseComplaintModal").classList.remove("hidden");
     }
 
     function closeRaiseComplaintModal() {
       document.getElementById("raiseComplaintModal").classList.add("hidden");
       document.getElementById("raiseComplaintForm").reset();
+      editingComplaintId = null;
     }
 
     document.getElementById("raiseComplaintForm").addEventListener("submit", async (e) => {
       e.preventDefault();
+
       const formData = new FormData(e.target);
       const complaintData = Object.fromEntries(formData);
 
       try {
-        const res = await fetch(`${API}/complaints`, {
-          method: "POST",
+        let url = `${API}/complaints`;
+        let method = "POST";
+
+        // If editing
+        if (editingComplaintId) {
+          url = `${API}/complaints/edit/${editingComplaintId}`;
+          method = "PUT";
+        }
+
+        const res = await fetch(url, {
+          method,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`
@@ -528,21 +613,24 @@
           body: JSON.stringify(complaintData)
         });
 
-        if (!res.ok) throw new Error("Failed to submit");
+        if (!res.ok) throw new Error("Failed request");
 
         Swal.fire({
           icon: "success",
-          title: "Complaint Submitted",
-          text: "Your complaint has been registered successfully. We'll get back to you soon!",
-          timer: 3000,
+          title: editingComplaintId ? "Complaint Updated!" : "Complaint Submitted!",
+          timer: 2000,
           showConfirmButton: false
         });
+
         closeRaiseComplaintModal();
+        editingComplaintId = null;
         loadComplaints();
+
       } catch (err) {
-        Swal.fire("Error", "Unable to submit complaint. Please try again.", "error");
+        Swal.fire("Error", "Operation failed. Please try again.", "error");
       }
     });
+
 
     async function openViewComplaintModal(id) {
       try {
@@ -567,6 +655,12 @@
         document.getElementById("viewCreatedAt").textContent = new Date(c.createdAt).toLocaleString();
         document.getElementById("viewResolvedAt").textContent = c.resolvedAt ? new Date(c.resolvedAt).toLocaleDateString() : "Not completed yet";
         document.getElementById("viewDescription").textContent = c.description;
+        if (c.status === "reverted" && c.revertReason) {
+          document.getElementById("revertReasonBox").classList.remove("hidden");
+          document.getElementById("revertReasonText").textContent = c.revertReason;
+        } else {
+          document.getElementById("revertReasonBox").classList.add("hidden");
+        }
 
         // Show modal
         document.getElementById("viewComplaintModal").classList.remove("hidden");
@@ -582,100 +676,33 @@
 
     async function editComplaint(id) {
       try {
-        const res = await fetch(`${API}/complaints/my`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const complaints = await res.json();
-        const complaint = complaints.find(c => c._id === id);
+        const complaint = allComplaints.find(c => c._id === id);
 
         if (!complaint) {
           Swal.fire("Error", "Complaint not found", "error");
           return;
         }
 
-        const { value } = await Swal.fire({
-          title: "Edit Complaint",
-          width: 700,
-          showCancelButton: true,
-          confirmButtonText: "Update",
-          confirmButtonColor: "#4f46e5",
-          html: `
-            <div class="text-left space-y-4">
-              <div>
-                <label class="text-sm text-gray-600">Title</label>
-                <input id="title" class="w-full mt-1 border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500" value="${complaint.title}">
-              </div>
-              <div>
-                <label class="text-sm text-gray-600">Category</label>
-                <select id="category" class="w-full mt-1 border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
-                  <option value="Water" ${complaint.category === 'Water' ? 'selected' : ''}>Water</option>
-                  <option value="Electricity" ${complaint.category === 'Electricity' ? 'selected' : ''}>Electricity</option>
-                  <option value="Internet" ${complaint.category === 'Internet' ? 'selected' : ''}>Internet</option>
-                  <option value="Maintenance" ${complaint.category === 'Maintenance' ? 'selected' : ''}>Maintenance</option>
-                  <option value="Cleanliness" ${complaint.category === 'Cleanliness' ? 'selected' : ''}>Cleanliness</option>
-                  <option value="Other" ${complaint.category === 'Other' ? 'selected' : ''}>Other</option>
-                </select>
-              </div>
-              <div>
-                <label class="text-sm text-gray-600">Priority</label>
-                <select id="priority" class="w-full mt-1 border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
-                  <option value="low" ${complaint.priority === 'low' ? 'selected' : ''}>Low</option>
-                  <option value="medium" ${complaint.priority === 'medium' ? 'selected' : ''}>Medium</option>
-                  <option value="high" ${complaint.priority === 'high' ? 'selected' : ''}>High</option>
-                </select>
-              </div>
-              <div>
-                <label class="text-sm text-gray-600">Description</label>
-                <textarea id="description" rows="4" class="w-full mt-1 border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">${complaint.description}</textarea>
-              </div>
-            </div>
-          `,
-          preConfirm: () => {
-            const title = document.getElementById("title").value.trim();
-            const category = document.getElementById("category").value;
-            const priority = document.getElementById("priority").value;
-            const description = document.getElementById("description").value.trim();
+        editingComplaintId = id;
 
-            if (!title || !category || !description) {
-              Swal.showValidationMessage("All fields are required");
-              return false;
-            }
+        // Change modal to Edit Mode
+        document.getElementById("modalTitle").textContent = "Edit Complaint";
+        document.getElementById("submitBtn").textContent = "Update Complaint";
 
-            return { title, category, priority, description };
-          }
-        });
+        // Fill form values
+        document.getElementById("title").value = complaint.title;
+        document.getElementById("category").value = complaint.category;
+        document.getElementById("priority").value = complaint.priority;
+        document.getElementById("description").value = complaint.description;
 
-        if (!value) return;
+        document.getElementById("raiseComplaintModal").classList.remove("hidden");
 
-        try {
-          const res = await fetch(`${API}/complaints/edit/${id}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify(value)
-          });
-
-          if (!res.ok) throw new Error("Failed to update");
-
-          Swal.fire({
-            icon: "success",
-            title: "Updated!",
-            text: "Complaint updated successfully",
-            timer: 2000,
-            showConfirmButton: false
-          });
-
-          loadComplaints();
-        } catch (err) {
-          Swal.fire("Error", "Unable to update complaint", "error");
-        }
       } catch (err) {
         console.error(err);
         Swal.fire("Error", "Unable to load complaint for editing", "error");
       }
     }
+
 
     async function withdrawComplaint(id) {
       const confirm = await Swal.fire({

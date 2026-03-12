@@ -8,16 +8,16 @@ router.post('/', protect, authorize('student'), async (req, res) => {
   try {
     const { priority } = req.body;
 
-    let slaHours = 72;
-    if (priority === 'high') slaHours = 24;
-    else if (priority === 'medium') slaHours = 48;
+    // let slaHours = 72;
+    // if (priority === 'high') slaHours = 24;
+    // else if (priority === 'medium') slaHours = 48;
 
-    const slaDeadline = new Date(Date.now() + slaHours * 60 * 60 * 1000);
+    // const slaDeadline = new Date(Date.now() + slaHours * 60 * 60 * 1000);
 
     const complaint = await Complaint.create({
       ...req.body,
       student: req.user._id,
-      slaDeadline
+      // slaDeadline
     });
 
     res.status(201).json(complaint);
@@ -26,7 +26,7 @@ router.post('/', protect, authorize('student'), async (req, res) => {
   }
 });
 
-// Edit complaint (student - only if pending)
+// Edit complaint (student)
 router.put('/edit/:id', protect, authorize('student'), async (req, res) => {
   try {
     const complaint = await Complaint.findOne({
@@ -37,10 +37,17 @@ router.put('/edit/:id', protect, authorize('student'), async (req, res) => {
     if (!complaint)
       return res.status(404).json({ message: "Complaint not found" });
 
-    if (complaint.status !== "pending")
+    if (!["pending", "reverted"].includes(complaint.status))
       return res.status(403).json({ message: "Complaint cannot be edited now" });
 
     Object.assign(complaint, req.body);
+
+    // If editing reverted complaint → set back to pending
+    if (complaint.status === "reverted") {
+      complaint.status = "pending";
+      complaint.revertReason = undefined;
+    }
+
     await complaint.save();
 
     res.json({ message: "Complaint updated successfully", complaint });
@@ -48,6 +55,7 @@ router.put('/edit/:id', protect, authorize('student'), async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
 
 // Withdraw complaint (student - only if pending) - Now sets to "withdrawn"
 router.delete('/:id', protect, authorize('student'), async (req, res) => {

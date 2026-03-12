@@ -9,6 +9,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- For Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -61,8 +64,8 @@
                     <h3 id="resolvedCount" class="text-4xl font-bold text-green-600 mt-2">0</h3>
                 </div>
                 <div class="bg-white rounded-lg shadow-md p-6 text-center">
-                    <p class="text-gray-500 text-sm uppercase tracking-wide">Rejected</p>
-                    <h3 id="rejectedCount" class="text-4xl font-bold text-red-600 mt-2">0</h3>
+                    <p class="text-gray-500 text-sm uppercase tracking-wide">Reverted</p>
+                    <h3 id="revertedCount" class="text-4xl font-bold text-red-600 mt-2">0</h3>
                 </div>
             </section>
 
@@ -70,7 +73,8 @@
             <section class="bg-white rounded-lg shadow-md p-6">
                 <div class="flex flex-wrap items-end gap-4">
                     <div class="flex-1 min-w-0">
-                        <label for="statusFilter" class="block text-sm font-medium text-gray-700 mb-1">Filter by Status</label>
+                        <label for="statusFilter" class="block text-sm font-medium text-gray-700 mb-1">Filter by
+                            Status</label>
                         <select id="statusFilter"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                             <option value="">All</option>
@@ -78,29 +82,39 @@
                             <option value="assigned">Assigned</option>
                             <option value="in-progress">In Progress</option>
                             <option value="resolved">Resolved</option>
-                            <option value="rejected">Rejected</option>
+                            <option value="reverted">Reverted</option>
                         </select>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <label for="priorityFilter" class="block text-sm font-medium text-gray-700 mb-1">Filter by Priority</label>
+                        <label for="priorityFilter" class="block text-sm font-medium text-gray-700 mb-1">Filter by
+                            Priority</label>
                         <select id="priorityFilter"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                             <option value="">All</option>
                             <option value="low">Low</option>
                             <option value="medium">Medium</option>
                             <option value="high">High</option>
-                            <option value="urgent">Urgent</option>
+                            <!-- <option value="urgent">Urgent</option> -->
                         </select>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <label for="categoryFilter" class="block text-sm font-medium text-gray-700 mb-1">Filter by Category</label>
+                        <label for="categoryFilter" class="block text-sm font-medium text-gray-700 mb-1">Filter by
+                            Category</label>
                         <select id="categoryFilter"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                            <option value="">All</option>
-                            <option value="academic">Academic</option>
-                            <option value="administrative">Administrative</option>
-                            <option value="facility">Facility</option>
-                            <option value="other">Other</option>
+                            <option value="">All Categories</option>
+                            <option value="Plumbing & Water">Plumbing & Water</option>
+                            <option value="Electrical">Electrical</option>
+                            <option value="Internet & Network">Internet & Network</option>
+                            <option value="Room Maintenance">Room Maintenance</option>
+                            <option value="Housekeeping & Cleanliness">Housekeeping & Cleanliness</option>
+                            <option value="Common Area Facilities">Common Area Facilities</option>
+                            <option value="Pest Control">Pest Control</option>
+                            <option value="Mess & Food Services">Mess & Food Services</option>
+                            <option value="Security & Safety">Security & Safety</option>
+                            <option value="Administrative Issues">Administrative Issues</option>
+                            <option value="Other">Other</option>
+
                         </select>
                     </div>
                     <div class="flex-1 min-w-0">
@@ -121,10 +135,10 @@
                         <i class="fas fa-sync-alt"></i>
                         <span>Refresh</span>
                     </button>
-                    <button onclick="exportCSV()"
+                    <button onclick="exportExcel()"
                         class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2">
                         <i class="fas fa-download"></i>
-                        <span>Export CSV</span>
+                        <span>Export Excel</span>
                     </button>
                 </div>
             </section>
@@ -135,34 +149,42 @@
                     <table class="w-full text-sm">
                         <thead class="bg-gray-50 border-b border-gray-200">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    <input type="checkbox" id="selectAll" class="rounded">
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Complaint ID</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Priority</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Completed</th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Complaint ID</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Title</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Category</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Status</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Priority</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Created</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Completed</th>
+                                <th
+                                    class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions</th>
                             </tr>
                         </thead>
                         <tbody id="complaintsTable" class="divide-y divide-gray-200"></tbody>
                     </table>
                 </div>
-                <!-- Bulk Actions and Pagination -->
+                <!-- Pagination -->
                 <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                        <div id="bulkActions" class="hidden space-x-2">
-                            <button onclick="bulkAssign()" class="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">Bulk Assign</button>
-                            <button onclick="bulkReject()" class="px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700">Bulk Reject</button>
-                        </div>
-                        <div id="pageInfo" class="text-sm text-gray-700"></div>
-                    </div>
                     <div class="flex space-x-2">
-                        <button id="prevPage" class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">Prev</button>
-                        <button id="nextPage" class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
+                        <button id="prevPage"
+                            class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">Prev</button>
+                        <button id="nextPage"
+                            class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
                     </div>
                 </div>
             </section>
@@ -183,7 +205,8 @@
                 </div>
                 <div>
                     <p class="text-gray-500 font-medium">Status</p>
-                    <span id="modalStatus" class="inline-flex px-3 py-1 rounded-full text-xs font-medium capitalize"></span>
+                    <span id="modalStatus"
+                        class="inline-flex px-3 py-1 rounded-full text-xs font-medium capitalize"></span>
                 </div>
                 <div>
                     <p class="text-gray-500 font-medium">Priority</p>
@@ -193,10 +216,10 @@
                     <p class="text-gray-500 font-medium">Category</p>
                     <p id="modalCategory" class="capitalize font-semibold text-gray-900"></p>
                 </div>
-                <div>
+                <!-- <div>
                     <p class="text-gray-500 font-medium">Progress</p>
                     <p id="modalProgress" class="font-semibold text-gray-900"></p>
-                </div>
+                </div> -->
                 <div class="md:col-span-2">
                     <p class="text-gray-500 font-medium">Title</p>
                     <p id="modalTitle" class="font-semibold text-gray-900"></p>
@@ -213,10 +236,15 @@
                     <p class="text-gray-500 font-medium">Completed At</p>
                     <p id="modalCompletedAt" class="font-semibold text-gray-900"></p>
                 </div>
+                <div id="revertReasonBox" class="hidden bg-purple-50 border border-purple-200 p-3 rounded-lg mt-3">
+                    <p class="text-sm font-medium text-red-700">Clarification Required:</p>
+                    <p id="revertReasonText" class="text-sm text-purple-600 mt-1"></p>
+                </div>
             </div>
-            <div class="mt-8 text-right">
-                <button onclick="closeComplaintModal()" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">Close</button>
-            </div>
+            <!-- <div class="mt-8 text-right">
+                <button onclick="closeComplaintModal()"
+                    class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">Close</button>
+            </div> -->
         </div>
     </div>
 
@@ -234,21 +262,20 @@
         let filteredComplaints = [];
         let currentPage = 1;
         const itemsPerPage = 10;
-        let selectedComplaints = new Set();
 
-        const statusProgress = {
-            pending: 25,
-            assigned: 45,
-            "in-progress": 70,
-            resolved: 100,
-            rejected: 100
-        };
+        // const statusProgress = {
+        //     pending: 25,
+        //     assigned: 45,
+        //     "in-progress": 70,
+        //     resolved: 100,
+        //     // rejected: 100
+        // };
 
         const statusBadge = s =>
             s === "resolved" ? "bg-green-100 text-green-800" :
                 s === "in-progress" ? "bg-yellow-100 text-yellow-800" :
                     s === "assigned" ? "bg-blue-100 text-blue-800" :
-                        s === "rejected" ? "bg-red-100 text-red-800" :
+                        s === "reverted" ? "bg-purple-100 text-purple-800" :
                             "bg-gray-100 text-gray-800";
 
         // Load complaints from API, filter withdrawn
@@ -303,10 +330,11 @@
             document.getElementById("assignedCount").textContent = allComplaints.filter(c => c.status === "assigned").length;
             document.getElementById("inProgressCount").textContent = allComplaints.filter(c => c.status === "in-progress").length;
             document.getElementById("resolvedCount").textContent = allComplaints.filter(c => c.status === "resolved").length;
-            document.getElementById("rejectedCount").textContent = allComplaints.filter(c => c.status === "rejected").length;
+            document.getElementById("revertedCount").textContent = allComplaints.filter(c => c.status === "reverted").length;
+
         }
 
-            function renderTable() {
+        function renderTable() {
             const start = (currentPage - 1) * itemsPerPage;
             const end = start + itemsPerPage;
             const pageData = filteredComplaints.slice(start, end);
@@ -315,12 +343,9 @@
             tbody.innerHTML = "";
 
             pageData.forEach(c => {
-                const isSelected = selectedComplaints.has(c._id);
                 tbody.innerHTML += `
                     <tr class="hover:bg-gray-50 transition-colors">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <input type="checkbox" class="rowCheckbox rounded" data-id="${c._id}" ${isSelected ? 'checked' : ''}>
-                        </td>
+                        
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#${c._id.slice(-6)}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 max-w-xs truncate">${c.title || "N/A"}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 capitalize">${c.category || "N/A"}</td>
@@ -335,7 +360,7 @@
                             ${c.status === "pending" ? `<button onclick="assignComplaint('${c._id}')" class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200">Assign</button>` : ""}
                             ${c.status === "assigned" ? `<button onclick="startWork('${c._id}')" class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md text-yellow-700 bg-yellow-100 hover:bg-yellow-200">Start</button>` : ""}
                             ${c.status === "in-progress" ? `<button onclick="completeWork('${c._id}')" class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md text-green-700 bg-green-100 hover:bg-green-200">Resolve</button>` : ""}
-                            ${["assigned", "in-progress"].includes(c.status) ? `<button onclick="rejectComplaint('${c._id}')" class="inline-flex items-center px-3 py-1 border border-transparent text-xs font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200">Reject</button>` : ""}
+                            ${["assigned", "in-progress"].includes(c.status) ? `<button onclick="revertComplaint('${c._id}')"class="inline-flex items-center px-3 py-1 text-xs font-medium rounded-md text-purple-700 bg-purple-100 hover:bg-purple-200">Revert</button>` : ""}
                         </td>
                     </tr>
                 `;
@@ -344,50 +369,9 @@
             document.getElementById("pageInfo").textContent = `Page ${currentPage} of ${Math.ceil(filteredComplaints.length / itemsPerPage)}`;
             document.getElementById("prevPage").disabled = currentPage === 1;
             document.getElementById("nextPage").disabled = end >= filteredComplaints.length;
-            updateBulkActions();
+
         }
 
-        function updateBulkActions() {
-            const bulkActions = document.getElementById("bulkActions");
-            if (selectedComplaints.size > 0) {
-                bulkActions.classList.remove("hidden");
-            } else {
-                bulkActions.classList.add("hidden");
-            }
-        }
-
-        async function bulkAssign() {
-            const confirm = await Swal.fire({
-                title: "Bulk Assign Complaints?",
-                text: `Assign ${selectedComplaints.size} complaints?`,
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonText: "Yes, Assign"
-            });
-
-            if (!confirm.isConfirmed) return;
-
-            const promises = Array.from(selectedComplaints).map(id => updateComplaint(id, { status: "assigned" }));
-            await Promise.all(promises);
-            selectedComplaints.clear();
-            loadComplaints();
-        }
-
-        async function bulkReject() {
-            const confirm = await Swal.fire({
-                title: "Bulk Reject Complaints?",
-                text: `Reject ${selectedComplaints.size} complaints?`,
-                icon: "warning",
-                showCancelButton: true
-            });
-
-            if (!confirm.isConfirmed) return;
-
-            const promises = Array.from(selectedComplaints).map(id => updateComplaint(id, { status: "rejected", resolvedAt: new Date().toISOString() }));
-            await Promise.all(promises);
-            selectedComplaints.clear();
-            loadComplaints();
-        }
 
         async function assignComplaint(id) {
             const confirm = await Swal.fire({
@@ -413,21 +397,26 @@
             });
         }
 
-        async function rejectComplaint(id) {
-            const confirm = await Swal.fire({
-                title: "Reject Complaint?",
-                text: "This will mark it as rejected",
-                icon: "warning",
-                showCancelButton: true
+        async function revertComplaint(id) {
+            const { value: reason } = await Swal.fire({
+                title: "Revert Complaint",
+                input: "textarea",
+                inputLabel: "Reason for clarification",
+                inputPlaceholder: "Explain what details are missing...",
+                inputAttributes: { "aria-label": "Revert reason" },
+                showCancelButton: true,
+                confirmButtonText: "Revert"
             });
 
-            if (confirm.isConfirmed) {
-                await updateComplaint(id, {
-                    status: "rejected",
-                    resolvedAt: new Date().toISOString()
-                });
-            }
+            if (!reason) return;
+
+            await updateComplaint(id, {
+                status: "reverted",
+                revertReason: reason,
+                resolvedAt: null
+            });
         }
+
 
         async function updateComplaint(id, updates) {
             try {
@@ -442,37 +431,74 @@
 
                 if (!res.ok) throw new Error("Update failed");
 
-                Swal.fire("Success", "Complaint updated", "success");
+                // Swal.fire("Success", "Complaint updated", "success");
+                Swal.fire({
+                    icon: "success",
+                    title: "Complaint Updated!",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
                 loadComplaints();
             } catch (err) {
                 console.error(err);
-                Swal.fire("Error", "Unable to update complaint", "error");
+                // Swal.fire("Error", "Unable to update complaint", "error");
+                Swal.fire({
+                    icon: "error",
+                    title: "Unable to update complaint",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
             }
         }
 
-        function exportCSV() {
-            const headers = ["Complaint ID", "Title", "Category", "Status", "Priority", "Date Created", "Date Completed"];
-            const rows = filteredComplaints.map(c => [
-                `#${c._id.slice(-6)}`,
-                c.title || "",
-                c.category || "",
-                c.status,
-                c.priority,
-                new Date(c.createdAt).toLocaleString(),
-                c.resolvedAt ? new Date(c.resolvedAt).toLocaleString() : ""
-            ]);
+        function exportExcel() {
+            if (!filteredComplaints.length) {
+                Swal.fire("No Data", "There are no complaints to export.", "info");
+                return;
+            }
 
-            let csvContent = "data:text/csv;charset=utf-8,"
-                + headers.join(",") + "\n"
-                + rows.map(r => r.join(",")).join("\n");
+            // Prepare structured data for Excel
+            const data = filteredComplaints.map((c, index) => ({
+                "S.No": index + 1,
+                "Complaint ID": `#${c._id.slice(-6).toUpperCase()}`,
+                "Title": c.title || "",
+                "Category": c.category || "",
+                "Status": c.status,
+                "Priority": c.priority,
+                "Date Created": new Date(c.createdAt).toLocaleString(),
+                "Date Completed": c.resolvedAt
+                    ? new Date(c.resolvedAt).toLocaleString()
+                    : "Not Completed"
+            }));
 
-            const link = document.createElement("a");
-            link.href = encodeURI(csvContent);
-            link.download = "complaints_export.csv";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            // Create worksheet
+            const worksheet = XLSX.utils.json_to_sheet(data);
+
+            // Auto column width (professional look)
+            const columnWidths = Object.keys(data[0]).map(key => ({
+                wch: Math.max(
+                    key.length,
+                    ...data.map(row => (row[key] ? row[key].toString().length : 10))
+                )
+            }));
+            worksheet["!cols"] = columnWidths;
+
+            // Create workbook
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Complaints Report");
+
+            // Professional file name
+            const now = new Date();
+            const formattedDate = now.toISOString().replace(/[:T]/g, "-").split(".")[0];
+
+            const fileName = `ResolveNow_Complaints_Report_${formattedDate}.xlsx`;
+
+            // Download file
+            XLSX.writeFile(workbook, fileName);
+
+            Swal.fire("Export Successful", "Excel report downloaded successfully.", "success");
         }
+
 
         function refreshData() {
             loadComplaints();
@@ -488,7 +514,7 @@
             document.getElementById("modalDetails").textContent = c.description || "No description provided";
             document.getElementById("modalPriority").textContent = c.priority || "N/A";
             document.getElementById("modalCategory").textContent = c.category || "N/A";
-            document.getElementById("modalProgress").textContent = `${statusProgress[c.status]}%`;
+            // document.getElementById("modalProgress").textContent = `${statusProgress[c.status]}%`;
             document.getElementById("modalCreatedAt").textContent =
                 new Date(c.createdAt).toLocaleString();
 
@@ -497,7 +523,12 @@
                 c.resolvedAt
                     ? new Date(c.resolvedAt).toLocaleString()
                     : "Not completed yet";
-
+            if (c.status === "reverted" && c.revertReason) {
+                document.getElementById("revertReasonBox").classList.remove("hidden");
+                document.getElementById("revertReasonText").textContent = c.revertReason;
+            } else {
+                document.getElementById("revertReasonBox").classList.add("hidden");
+            }
             // Status badge
             const statusEl = document.getElementById("modalStatus");
             statusEl.textContent = c.status;
@@ -520,37 +551,6 @@
             localStorage.removeItem("resolveNowUser");
             location.href = "auth.html";
         }
-
-        // Event listeners for checkboxes
-        document.getElementById("selectAll").addEventListener("change", (e) => {
-            const checkboxes = document.querySelectorAll(".rowCheckbox");
-            checkboxes.forEach(cb => {
-                cb.checked = e.target.checked;
-                const id = cb.dataset.id;
-                if (e.target.checked) {
-                    selectedComplaints.add(id);
-                } else {
-                    selectedComplaints.delete(id);
-                }
-            });
-            updateBulkActions();
-        });
-
-        document.addEventListener("change", (e) => {
-            if (e.target.classList.contains("rowCheckbox")) {
-                const id = e.target.dataset.id;
-                if (e.target.checked) {
-                    selectedComplaints.add(id);
-                } else {
-                    selectedComplaints.delete(id);
-                }
-                updateBulkActions();
-                // Update selectAll state
-                const allCheckboxes = document.querySelectorAll(".rowCheckbox");
-                const checkedBoxes = document.querySelectorAll(".rowCheckbox:checked");
-                document.getElementById("selectAll").checked = allCheckboxes.length === checkedBoxes.length && allCheckboxes.length > 0;
-            }
-        });
 
         // Pagination
         document.getElementById("prevPage").addEventListener("click", () => {

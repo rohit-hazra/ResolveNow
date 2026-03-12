@@ -15,93 +15,127 @@
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- SweetAlert2 CSS & JS -->
+    <!-- SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
 
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
+
+        /* Card animation */
+        .card-animate {
+            animation: fadeSlide 0.8s ease forwards;
+        }
+
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Form transition */
+        .form-transition {
+            animation: formFade 0.4s ease forwards;
+        }
+
+        @keyframes formFade {
+            from {
+                opacity: 0;
+                transform: scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
     </style>
 </head>
 
-<body class="min-h-screen bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center px-4">
+<body
+    class="min-h-screen relative overflow-hidden bg-gradient-to-br from-indigo-600 to-blue-600 flex items-center justify-center px-4">
 
     <!-- Auth Card -->
-    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
-        <!-- Back to Home -->
-        <a href="index.html" class="inline-flex items-center text-sm text-gray-500 hover:text-indigo-600 mb-6">
-            <i class="fa-solid fa-arrow-left mr-2"></i>
-            Back
+    <div
+        class="relative bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl w-full max-w-md p-8 card-animate">
+
+        <!-- Back -->
+        <a href="index.html"
+            class="inline-flex items-center text-sm text-gray-500 hover:text-indigo-600 mb-6 transition">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Back
         </a>
 
         <!-- Brand -->
         <div class="text-center mb-8">
-            <h1 class="text-2xl font-bold text-indigo-600">
+            <h1 class="text-3xl font-extrabold text-indigo-600 tracking-wide">
                 <i class="fa-solid fa-scale-balanced mr-2"></i>ResolveNow
             </h1>
             <p class="text-gray-500 text-sm mt-2">
-                Secure access to the grievance platform
+                Secure grievance redressal system
             </p>
         </div>
 
         <!-- LOGIN FORM -->
-        <form id="loginForm" class="space-y-5">
+        <form id="loginForm" class="space-y-5 form-transition">
             <h2 class="text-xl font-semibold text-gray-800">Sign in</h2>
 
             <div>
                 <label class="text-sm text-gray-600">Email address</label>
                 <input type="email" required
-                    class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                    class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition">
             </div>
 
             <div>
                 <label class="text-sm text-gray-600">Password</label>
                 <input type="password" required
-                    class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                    class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition">
             </div>
 
             <button
-                class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition">
+                class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-500/30 transition-all duration-300">
                 Sign In
             </button>
 
             <p class="text-sm text-center text-gray-500">
                 Don’t have an account?
-                <span onclick="showRegister()" class="text-indigo-600 cursor-pointer font-medium hover:underline">
+                <span onclick="showRegister()"
+                    class="text-indigo-600 cursor-pointer font-medium hover:underline">
                     Create one
                 </span>
             </p>
         </form>
 
         <!-- REGISTER FORM -->
-        <form id="registerForm" class="space-y-5 hidden">
+        <form id="registerForm" class="space-y-5 hidden form-transition">
             <h2 class="text-xl font-semibold text-gray-800">Create account</h2>
 
             <div>
                 <label class="text-sm text-gray-600">Full name</label>
                 <input type="text" required
-                    class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                    class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition">
             </div>
 
             <div>
                 <label class="text-sm text-gray-600">Email address</label>
                 <input type="email" required
-                    class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                    class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition">
             </div>
 
             <div>
                 <label class="text-sm text-gray-600">Password</label>
                 <input type="password" required
-                    class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                    class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition">
             </div>
 
             <div>
                 <label class="text-sm text-gray-600">Role</label>
                 <select required
-                    class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                    class="w-full mt-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition">
                     <option value="">Select role</option>
                     <option value="student">Student</option>
                     <option value="coordinator">Coordinator</option>
@@ -110,13 +144,14 @@
             </div>
 
             <button
-                class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 transition">
+                class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-500/30 transition-all duration-300">
                 Register
             </button>
 
             <p class="text-sm text-center text-gray-500">
                 Already have an account?
-                <span onclick="showLogin()" class="text-indigo-600 cursor-pointer font-medium hover:underline">
+                <span onclick="showLogin()"
+                    class="text-indigo-600 cursor-pointer font-medium hover:underline">
                     Sign in
                 </span>
             </p>
@@ -129,7 +164,6 @@
         const loginForm = document.getElementById("loginForm");
         const registerForm = document.getElementById("registerForm");
 
-        // Toggle forms
         function showRegister() {
             loginForm.classList.add("hidden");
             registerForm.classList.remove("hidden");
@@ -147,16 +181,14 @@
             localStorage.setItem("resolveNowUser", JSON.stringify(user));
         };
 
-        // SweetAlert2 Toast config
         const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
-            timer: 3000,
+            timer: 2000,
             timerProgressBar: true,
         });
 
-        // Login
         loginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
 
@@ -171,32 +203,20 @@
                 });
 
                 const data = await res.json();
-
                 if (!res.ok) throw new Error(data.message || "Login failed");
 
                 saveToken(data.token, data.user);
-                loginForm.reset();
-
-                Toast.fire({
-                    icon: 'success',
-                    title: `Welcome back, ${data.user.fullName}!`
-                });
+                Toast.fire({ icon: 'success', title: `Welcome ${data.user.fullName}` });
 
                 setTimeout(() => {
-                    if (data.user.role === "student") window.location.href = "student-dashboard.html";
-                    else if (data.user.role === "coordinator") window.location.href = "coordinator-dashboard.html";
-                    else if (data.user.role === "admin") window.location.href = "admin-dashboard.html";
-                }, 4000); // small delay so toast is visible
+                    window.location.href = `${data.user.role}-dashboard.html`;
+                }, 1200);
 
             } catch (err) {
-                Toast.fire({
-                    icon: 'error',
-                    title: err.message
-                });
+                Toast.fire({ icon: 'error', title: err.message });
             }
         });
 
-        // Register
         registerForm.addEventListener("submit", async (e) => {
             e.preventDefault();
 
@@ -206,10 +226,7 @@
             const role = registerForm.querySelector('select').value;
 
             if (!role) {
-                Toast.fire({
-                    icon: 'warning',
-                    title: "Please select a role"
-                });
+                Toast.fire({ icon: 'warning', title: "Select a role" });
                 return;
             }
 
@@ -221,35 +238,20 @@
                 });
 
                 const data = await res.json();
-
                 if (!res.ok) throw new Error(data.message || "Registration failed");
 
                 saveToken(data.token, data.user);
-                registerForm.reset();
-
-                Toast.fire({
-                    icon: 'success',
-                    title: `Account created! Welcome, ${data.user.fullName}`
-                });
+                Toast.fire({ icon: 'success', title: "Account created!" });
 
                 setTimeout(() => {
-                    if (data.user.role === "student") window.location.href = "student-dashboard.html";
-                    else if (data.user.role === "coordinator") window.location.href = "coordinator-dashboard.html";
-                    else if (data.user.role === "admin") window.location.href = "admin-dashboard.html";
-                }, 1000);
+                    window.location.href = `${data.user.role}-dashboard.html`;
+                }, 1200);
 
             } catch (err) {
-                Toast.fire({
-                    icon: 'error',
-                    title: err.message
-                });
+                Toast.fire({ icon: 'error', title: err.message });
             }
         });
     </script>
 
-
-
-
 </body>
-
 </html>
