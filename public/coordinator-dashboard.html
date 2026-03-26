@@ -192,59 +192,81 @@
     </div>
 
     <!-- Complaint Details Modal -->
-    <div id="complaintModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
-        <div class="bg-white w-full max-w-4xl rounded-lg shadow-xl p-6 relative max-h-[90vh] overflow-y-auto">
-            <button onclick="closeComplaintModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-            <h3 class="text-2xl font-bold text-gray-900 mb-6">Complaint Details</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-                <div>
-                    <p class="text-gray-500 font-medium">Complaint ID</p>
-                    <p id="modalComplaintId" class="font-semibold text-gray-900"></p>
-                </div>
-                <div>
-                    <p class="text-gray-500 font-medium">Status</p>
-                    <span id="modalStatus"
-                        class="inline-flex px-3 py-1 rounded-full text-xs font-medium capitalize"></span>
-                </div>
-                <div>
-                    <p class="text-gray-500 font-medium">Priority</p>
-                    <p id="modalPriority" class="capitalize font-semibold text-gray-900"></p>
-                </div>
-                <div>
-                    <p class="text-gray-500 font-medium">Category</p>
-                    <p id="modalCategory" class="capitalize font-semibold text-gray-900"></p>
-                </div>
-                <!-- <div>
-                    <p class="text-gray-500 font-medium">Progress</p>
-                    <p id="modalProgress" class="font-semibold text-gray-900"></p>
-                </div> -->
-                <div class="md:col-span-2">
-                    <p class="text-gray-500 font-medium">Title</p>
-                    <p id="modalTitle" class="font-semibold text-gray-900"></p>
-                </div>
-                <div class="md:col-span-2">
-                    <p class="text-gray-500 font-medium">Description</p>
-                    <p id="modalDetails" class="text-gray-700 leading-relaxed"></p>
-                </div>
-                <div>
-                    <p class="text-gray-500 font-medium">Created At</p>
-                    <p id="modalCreatedAt" class="font-semibold text-gray-900"></p>
-                </div>
-                <div>
-                    <p class="text-gray-500 font-medium">Completed At</p>
-                    <p id="modalCompletedAt" class="font-semibold text-gray-900"></p>
-                </div>
-                <div id="revertReasonBox" class="hidden bg-purple-50 border border-purple-200 p-3 rounded-lg mt-3">
-                    <p class="text-sm font-medium text-red-700">Clarification Required:</p>
-                    <p id="revertReasonText" class="text-sm text-purple-600 mt-1"></p>
+
+    <div id="complaintModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+
+                <div class="p-6">
+
+                    <!-- Header -->
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-2xl font-semibold text-gray-800">Complaint Details</h3>
+                        <button onclick="closeComplaintModal()" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="space-y-4">
+
+                        <!-- Grid Boxes -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm text-gray-500 font-medium">Complaint ID</p>
+                                <p id="modalComplaintId" class="text-gray-800 font-semibold"></p>
+                            </div>
+
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm text-gray-500 font-medium">Status</p>
+                                <span id="modalStatus" class="px-3 py-1 rounded-full text-sm font-medium"></span>
+                            </div>
+
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm text-gray-500 font-medium">Priority</p>
+                                <p id="modalPriority" class="text-gray-800 font-semibold capitalize"></p>
+                            </div>
+
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm text-gray-500 font-medium">Category</p>
+                                <p id="modalCategory" class="text-gray-800 font-semibold capitalize"></p>
+                            </div>
+
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm text-gray-500 font-medium">Created At</p>
+                                <p id="modalCreatedAt" class="text-gray-800 font-semibold"></p>
+                            </div>
+
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm text-gray-500 font-medium">Completed At</p>
+                                <p id="modalCompletedAt" class="text-gray-800 font-semibold"></p>
+                            </div>
+
+                        </div>
+
+                        <!-- Title -->
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-sm text-gray-500 font-medium mb-2">Title</p>
+                            <p id="modalTitle" class="text-gray-800 font-semibold"></p>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-sm text-gray-500 font-medium mb-2">Description</p>
+                            <p id="modalDetails" class="text-gray-800 leading-relaxed"></p>
+                        </div>
+
+                        <!-- Revert Reason -->
+                        <div id="revertReasonBox"
+                            class="hidden bg-purple-50 border border-purple-200 p-3 rounded-lg mt-3">
+                            <p class="text-sm font-medium text-red-700">Clarification Required:</p>
+                            <p id="revertReasonText" class="text-sm text-purple-600 mt-1"></p>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-            <!-- <div class="mt-8 text-right">
-                <button onclick="closeComplaintModal()"
-                    class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">Close</button>
-            </div> -->
         </div>
     </div>
 

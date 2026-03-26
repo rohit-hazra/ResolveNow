@@ -12,7 +12,7 @@ router.post('/', protect, authorize('student'), async (req, res) => {
     // if (priority === 'high') slaHours = 24;
     // else if (priority === 'medium') slaHours = 48;
 
-    // const slaDeadline = new Date(Date.now() + slaHours * 60 * 60 * 1000);
+    // const slaDeadline = new Date(Date.now() + slaHours * 60 * 60 * 1000); 
 
     const complaint = await Complaint.create({
       ...req.body,
