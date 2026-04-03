@@ -11,30 +11,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- For Excel -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-<body class="bg-gray-50 font-sans">
+<body class="bg-gray-50 font-sans overflow-x-hidden">
     <div class="min-h-screen flex flex-col">
         <!-- Header Section -->
-        <header class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
-            <div class="flex justify-between items-center">
+        <header class="bg-white shadow-sm border-b border-gray-200 px-4 sm:px-6 py-4">
+            <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900">Coordinator Dashboard</h1>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Coordinator Dashboard</h1>
                     <p class="text-gray-600 mt-1">Manage and assign complaints efficiently</p>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <div class="text-right">
+                <div class="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-end sm:gap-4">
+                    <div class="text-left sm:text-right min-w-0">
                         <p id="userName" class="font-semibold text-gray-900"></p>
-                        <p id="userEmail" class="text-sm text-gray-500"></p>
+                        <p id="userEmail" class="text-sm text-gray-500 break-all"></p>
                     </div>
-                    <div class="w-12 h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center">
+                    <div class="w-12 h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center self-start sm:self-auto">
                         <i class="fas fa-user-tie"></i>
                     </div>
                     <button onclick="logout()"
-                        class="flex items-center space-x-2 px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 hover:border-red-400 transition-colors"
+                        class="flex items-center justify-center space-x-2 px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 hover:border-red-400 transition-colors w-full sm:w-auto"
                         title="Logout">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
@@ -44,9 +45,9 @@
         </header>
 
         <!-- Main Content -->
-        <main class="flex-1 p-6 space-y-6">
+        <main class="flex-1 p-4 sm:p-6 space-y-6">
             <!-- Statistics Cards -->
-            <section class="grid grid-cols-1 md:grid-cols-5 gap-6">
+            <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 sm:gap-6">
                 <div class="bg-white rounded-lg shadow-md p-6 text-center">
                     <p class="text-gray-500 text-sm uppercase tracking-wide">Total</p>
                     <h3 id="totalCount" class="text-4xl font-bold text-gray-900 mt-2">0</h3>
@@ -69,10 +70,82 @@
                 </div>
             </section>
 
+            <!-- Analytics Charts -->
+            <section class="bg-white rounded-xl shadow-md border border-gray-200 p-6">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">Complaint Analytics</h2>
+                        <p class="text-sm text-gray-500 mt-1">Live visual insights based on the current filtered complaints list.</p>
+                    </div>
+                    <div class="w-full md:w-56">
+                        <label for="trendView" class="block text-sm font-medium text-gray-700 mb-1">Trend View</label>
+                        <select id="trendView"
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="daily">Complaints per Day</option>
+                            <option value="weekly">Complaints per Week</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                    <article class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900">Complaint Trend</h3>
+                                <p class="text-sm text-slate-500">Daily or weekly complaint volume</p>
+                            </div>
+                            <span class="text-xs font-medium px-3 py-1 rounded-full bg-indigo-100 text-indigo-700">Line</span>
+                        </div>
+                        <div class="h-80">
+                            <canvas id="complaintsTrendChart"></canvas>
+                        </div>
+                    </article>
+
+                    <article class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900">Department-wise Complaints</h3>
+                                <p class="text-sm text-slate-500">Distribution across departments or categories</p>
+                            </div>
+                            <span class="text-xs font-medium px-3 py-1 rounded-full bg-blue-100 text-blue-700">Bar</span>
+                        </div>
+                        <div class="h-80">
+                            <canvas id="departmentComplaintsChart"></canvas>
+                        </div>
+                    </article>
+
+                    <article class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900">Status Distribution</h3>
+                                <p class="text-sm text-slate-500">Pending, resolved, in progress and rejected mix</p>
+                            </div>
+                            <span class="text-xs font-medium px-3 py-1 rounded-full bg-emerald-100 text-emerald-700">Pie</span>
+                        </div>
+                        <div class="h-80">
+                            <canvas id="statusDistributionChart"></canvas>
+                        </div>
+                    </article>
+
+                    <article class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900">Priority Breakdown</h3>
+                                <p class="text-sm text-slate-500">Additional view of low, medium and high urgency</p>
+                            </div>
+                            <span class="text-xs font-medium px-3 py-1 rounded-full bg-amber-100 text-amber-700">Doughnut</span>
+                        </div>
+                        <div class="h-80">
+                            <canvas id="priorityBreakdownChart"></canvas>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
             <!-- Filters, Search, and Sorting -->
-            <section class="bg-white rounded-lg shadow-md p-6">
+            <section class="bg-white rounded-lg shadow-md p-4 sm:p-6">
                 <div class="flex flex-wrap items-end gap-4">
-                    <div class="flex-1 min-w-0">
+                    <div class="w-full sm:flex-1 sm:min-w-[220px]">
                         <label for="statusFilter" class="block text-sm font-medium text-gray-700 mb-1">Filter by
                             Status</label>
                         <select id="statusFilter"
@@ -85,7 +158,7 @@
                             <option value="reverted">Reverted</option>
                         </select>
                     </div>
-                    <div class="flex-1 min-w-0">
+                    <div class="w-full sm:flex-1 sm:min-w-[220px]">
                         <label for="priorityFilter" class="block text-sm font-medium text-gray-700 mb-1">Filter by
                             Priority</label>
                         <select id="priorityFilter"
@@ -97,7 +170,7 @@
                             <!-- <option value="urgent">Urgent</option> -->
                         </select>
                     </div>
-                    <div class="flex-1 min-w-0">
+                    <div class="w-full sm:flex-1 sm:min-w-[220px]">
                         <label for="categoryFilter" class="block text-sm font-medium text-gray-700 mb-1">Filter by
                             Category</label>
                         <select id="categoryFilter"
@@ -117,7 +190,7 @@
 
                         </select>
                     </div>
-                    <div class="flex-1 min-w-0">
+                    <div class="w-full sm:flex-1 sm:min-w-[220px]">
                         <label for="sortOrder" class="block text-sm font-medium text-gray-700 mb-1">Sort by Date</label>
                         <select id="sortOrder"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
@@ -125,18 +198,18 @@
                             <option value="oldest">Oldest First</option>
                         </select>
                     </div>
-                    <div class="flex-1 min-w-0">
+                    <div class="w-full sm:flex-1 sm:min-w-[220px]">
                         <label for="searchInput" class="block text-sm font-medium text-gray-700 mb-1">Search</label>
                         <input type="text" id="searchInput" placeholder="Title"
                             class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     </div>
                     <button onclick="refreshData()"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+                        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 w-full sm:w-auto">
                         <i class="fas fa-sync-alt"></i>
                         <span>Refresh</span>
                     </button>
                     <button onclick="exportExcel()"
-                        class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2">
+                        class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center space-x-2 w-full sm:w-auto">
                         <i class="fas fa-download"></i>
                         <span>Export Excel</span>
                     </button>
@@ -146,7 +219,7 @@
             <!-- Complaints Table -->
             <section class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
+                    <table class="w-full min-w-[900px] text-sm">
                         <thead class="bg-gray-50 border-b border-gray-200">
                             <tr>
                                 <th
@@ -179,12 +252,13 @@
                     </table>
                 </div>
                 <!-- Pagination -->
-                <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
-                    <div class="flex space-x-2">
+                <div class="px-4 sm:px-6 py-4 bg-gray-50 border-t border-gray-200 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <p id="pageInfo" class="text-sm text-gray-500 text-center sm:text-left">Page 1 of 1</p>
+                    <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                         <button id="prevPage"
-                            class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">Prev</button>
+                            class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto">Prev</button>
                         <button id="nextPage"
-                            class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
+                            class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto">Next</button>
                     </div>
                 </div>
             </section>
@@ -200,8 +274,8 @@
                 <div class="p-6">
 
                     <!-- Header -->
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-2xl font-semibold text-gray-800">Complaint Details</h3>
+                    <div class="flex items-start justify-between gap-4 mb-6">
+                        <h3 class="text-xl sm:text-2xl font-semibold text-gray-800">Complaint Details</h3>
                         <button onclick="closeComplaintModal()" class="text-gray-400 hover:text-gray-600">
                             <i class="fas fa-times text-xl"></i>
                         </button>
@@ -284,14 +358,20 @@
         let filteredComplaints = [];
         let currentPage = 1;
         const itemsPerPage = 10;
+        const dashboardCharts = {};
 
-        // const statusProgress = {
-        //     pending: 25,
-        //     assigned: 45,
-        //     "in-progress": 70,
-        //     resolved: 100,
-        //     // rejected: 100
-        // };
+        const chartPalette = {
+            indigo: "#4F46E5",
+            blue: "#2563EB",
+            cyan: "#06B6D4",
+            emerald: "#10B981",
+            amber: "#F59E0B",
+            red: "#EF4444",
+            slate: "#64748B",
+            rose: "#F43F5E"
+        };
+
+        
 
         const statusBadge = s =>
             s === "resolved" ? "bg-green-100 text-green-800" :
@@ -299,6 +379,246 @@
                     s === "assigned" ? "bg-blue-100 text-blue-800" :
                         s === "reverted" ? "bg-purple-100 text-purple-800" :
                             "bg-gray-100 text-gray-800";
+
+        function normalizeStatus(status) {
+            if (status === "reverted" || status === "rejected") return "rejected";
+            return status;
+        }
+
+        function destroyChart(key) {
+            if (dashboardCharts[key]) {
+                dashboardCharts[key].destroy();
+                dashboardCharts[key] = null;
+            }
+        }
+
+        function createChart(key, canvasId, config) {
+            destroyChart(key);
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            dashboardCharts[key] = new Chart(canvas, config);
+        }
+
+        function formatShortDate(date) {
+            return date.toLocaleDateString("en-IN", { month: "short", day: "numeric" });
+        }
+
+        function getTrendData(complaints, view) {
+            if (view === "weekly") {
+                const weekMap = new Map();
+                complaints.forEach(complaint => {
+                    const createdDate = new Date(complaint.createdAt);
+                    const weekStart = new Date(createdDate);
+                    const day = weekStart.getDay();
+                    const diff = weekStart.getDate() - day + (day === 0 ? -6 : 1);
+                    weekStart.setDate(diff);
+                    weekStart.setHours(0, 0, 0, 0);
+                    const key = weekStart.toISOString();
+                    weekMap.set(key, (weekMap.get(key) || 0) + 1);
+                });
+
+                const entries = [...weekMap.entries()]
+                    .sort((a, b) => new Date(a[0]) - new Date(b[0]))
+                    .slice(-8);
+
+                return {
+                    labels: entries.map(([date]) => `Week of ${formatShortDate(new Date(date))}`),
+                    values: entries.map(([, count]) => count)
+                };
+            }
+
+            const dayMap = new Map();
+            complaints.forEach(complaint => {
+                const createdDate = new Date(complaint.createdAt);
+                createdDate.setHours(0, 0, 0, 0);
+                const key = createdDate.toISOString();
+                dayMap.set(key, (dayMap.get(key) || 0) + 1);
+            });
+
+            const entries = [...dayMap.entries()]
+                .sort((a, b) => new Date(a[0]) - new Date(b[0]))
+                .slice(-10);
+
+            return {
+                labels: entries.map(([date]) => formatShortDate(new Date(date))),
+                values: entries.map(([, count]) => count)
+            };
+        }
+
+        function getDepartmentData(complaints) {
+            const counts = new Map();
+            complaints.forEach(complaint => {
+                const key = complaint.department || complaint.assignedDepartment || complaint.category || "Other";
+                counts.set(key, (counts.get(key) || 0) + 1);
+            });
+
+            const entries = [...counts.entries()]
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 6);
+
+            return {
+                labels: entries.map(([label]) => label),
+                values: entries.map(([, value]) => value)
+            };
+        }
+
+        function getStatusData(complaints) {
+            const counts = {
+                pending: 0,
+                resolved: 0,
+                "in-progress": 0,
+                rejected: 0
+            };
+
+            complaints.forEach(complaint => {
+                const status = normalizeStatus(complaint.status);
+                if (counts[status] !== undefined) {
+                    counts[status] += 1;
+                }
+            });
+
+            return {
+                labels: ["Pending", "Resolved", "In Progress", "Rejected"],
+                values: [counts.pending, counts.resolved, counts["in-progress"], counts.rejected]
+            };
+        }
+
+        function getPriorityData(complaints) {
+            const counts = { low: 0, medium: 0, high: 0 };
+            complaints.forEach(complaint => {
+                if (counts[complaint.priority] !== undefined) {
+                    counts[complaint.priority] += 1;
+                }
+            });
+
+            return {
+                labels: ["Low", "Medium", "High"],
+                values: [counts.low, counts.medium, counts.high]
+            };
+        }
+
+        function updateCharts() {
+            const trendView = document.getElementById("trendView").value;
+            const trendData = getTrendData(filteredComplaints, trendView);
+            const departmentData = getDepartmentData(filteredComplaints);
+            const statusData = getStatusData(filteredComplaints);
+            const priorityData = getPriorityData(filteredComplaints);
+
+            createChart("trend", "complaintsTrendChart", {
+                type: "line",
+                data: {
+                    labels: trendData.labels.length ? trendData.labels : ["No Data"],
+                    datasets: [{
+                        label: trendView === "weekly" ? "Complaints per Week" : "Complaints per Day",
+                        data: trendData.values.length ? trendData.values : [0],
+                        borderColor: chartPalette.indigo,
+                        backgroundColor: "rgba(79, 70, 229, 0.16)",
+                        fill: true,
+                        tension: 0.35,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: chartPalette.indigo
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: true, position: "top" }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { precision: 0 }
+                        }
+                    }
+                }
+            });
+
+            createChart("department", "departmentComplaintsChart", {
+                type: "bar",
+                data: {
+                    labels: departmentData.labels.length ? departmentData.labels : ["No Data"],
+                    datasets: [{
+                        label: "Complaints",
+                        data: departmentData.values.length ? departmentData.values : [0],
+                        backgroundColor: [
+                            chartPalette.blue,
+                            chartPalette.cyan,
+                            chartPalette.emerald,
+                            chartPalette.amber,
+                            chartPalette.rose,
+                            chartPalette.slate
+                        ],
+                        borderRadius: 8,
+                        maxBarThickness: 44
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: true, position: "top" }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { precision: 0 }
+                        }
+                    }
+                }
+            });
+
+            createChart("status", "statusDistributionChart", {
+                type: "pie",
+                data: {
+                    labels: statusData.labels,
+                    datasets: [{
+                        data: statusData.values,
+                        backgroundColor: [
+                            "#94A3B8",
+                            chartPalette.emerald,
+                            chartPalette.amber,
+                            chartPalette.red
+                        ],
+                        borderWidth: 2,
+                        borderColor: "#FFFFFF"
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: true, position: "bottom" }
+                    }
+                }
+            });
+
+            createChart("priority", "priorityBreakdownChart", {
+                type: "doughnut",
+                data: {
+                    labels: priorityData.labels,
+                    datasets: [{
+                        data: priorityData.values,
+                        backgroundColor: [
+                            "#38BDF8",
+                            chartPalette.amber,
+                            chartPalette.red
+                        ],
+                        borderWidth: 2,
+                        borderColor: "#FFFFFF"
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: "62%",
+                    plugins: {
+                        legend: { display: true, position: "bottom" }
+                    }
+                }
+            });
+        }
 
         // Load complaints from API, filter withdrawn
         async function loadComplaints() {
@@ -332,7 +652,7 @@
                 const matchesStatus = !statusFilter || c.status === statusFilter;
                 const matchesPriority = !priorityFilter || c.priority === priorityFilter;
                 const matchesCategory = !categoryFilter || c.category === categoryFilter;
-                const matchesSearch = !searchTerm || c.title.toLowerCase().includes(searchTerm);
+                const matchesSearch = !searchTerm || (c.title || "").toLowerCase().includes(searchTerm);
                 return matchesStatus && matchesPriority && matchesCategory && matchesSearch;
             });
 
@@ -344,6 +664,7 @@
             });
 
             updateStats();
+            updateCharts();
             renderTable();
         }
 
@@ -357,12 +678,25 @@
         }
 
         function renderTable() {
+            const totalPages = Math.max(1, Math.ceil(filteredComplaints.length / itemsPerPage));
+            if (currentPage > totalPages) currentPage = totalPages;
+
             const start = (currentPage - 1) * itemsPerPage;
             const end = start + itemsPerPage;
             const pageData = filteredComplaints.slice(start, end);
 
             const tbody = document.getElementById("complaintsTable");
             tbody.innerHTML = "";
+
+            if (!pageData.length) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="px-6 py-10 text-center text-sm text-gray-500">
+                            No complaints match the current filters.
+                        </td>
+                    </tr>
+                `;
+            }
 
             pageData.forEach(c => {
                 tbody.innerHTML += `
@@ -388,7 +722,7 @@
                 `;
             });
 
-            document.getElementById("pageInfo").textContent = `Page ${currentPage} of ${Math.ceil(filteredComplaints.length / itemsPerPage)}`;
+            document.getElementById("pageInfo").textContent = `Page ${currentPage} of ${totalPages}`;
             document.getElementById("prevPage").disabled = currentPage === 1;
             document.getElementById("nextPage").disabled = end >= filteredComplaints.length;
 
@@ -614,6 +948,8 @@
             currentPage = 1;
             applyFilters();
         });
+
+        document.getElementById("trendView").addEventListener("change", updateCharts);
 
         // Initial load
         loadComplaints();
