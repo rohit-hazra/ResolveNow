@@ -246,6 +246,4 @@ Built with effort and collaboration by:
 - Shubhranshu Sahoo
 - Diptiranjan Behera
 
-## 📄 License
 
-This project currently does not define a license. If you plan to publish it publicly, adding an open-source license would be a good next step.
