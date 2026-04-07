@@ -6,13 +6,10 @@ const { protect, authorize } = require('../middleware/authmiddleware');
 // Create complaint (student)
 router.post('/', protect, authorize('student'), async (req, res) => {
   try {
-
     const complaint = await Complaint.create({
       ...req.body,
       student: req.user._id,
-      // slaDeadline
     });
-
     res.status(201).json(complaint);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -50,7 +47,7 @@ router.put('/edit/:id', protect, authorize('student'), async (req, res) => {
 });
 
 
-// Withdraw complaint (student - only if pending) - Now sets to "withdrawn"
+// Withdraw complaint (student - only if pending) 
 router.delete('/:id', protect, authorize('student'), async (req, res) => {
   try {
     const complaint = await Complaint.findOne({
@@ -64,7 +61,7 @@ router.delete('/:id', protect, authorize('student'), async (req, res) => {
     if (complaint.status !== "pending")
       return res.status(403).json({ message: "Complaint cannot be withdrawn now" });
 
-    complaint.status = "withdrawn";  // Changed from "rejected"
+    complaint.status = "withdrawn"; 
     await complaint.save();
 
     res.json({ message: "Complaint withdrawn successfully" });
@@ -74,11 +71,10 @@ router.delete('/:id', protect, authorize('student'), async (req, res) => {
 });
 
 // Get all complaints (Admin / Coordinator)
-router.get('/', protect, authorize('coordinator', 'admin'), async (req, res) => {
+router.get('/', protect, authorize('coordinator'), async (req, res) => {
   try {
     const complaints = await Complaint.find().populate('student', 'fullName email');
     res.json(complaints);
-    // console.log("GET /api/complaints HIT by user:", req.user?.email, req.user?.role);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -94,8 +90,8 @@ router.get('/my', protect, authorize('student'), async (req, res) => {
   }
 });
 
-// Update complaint (Coordinator/Admin)
-router.put('/:id', protect, authorize('coordinator', 'admin'), async (req, res) => {
+// Update complaint (Coordinator)
+router.put('/:id', protect, authorize('coordinator'), async (req, res) => {
   try {
     const complaint = await Complaint.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json(complaint);
