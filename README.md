@@ -4,7 +4,7 @@
 
 ResolveNow is a full-stack complaint management platform built to simplify how campus issues are reported, tracked, and resolved. It gives students a structured way to raise complaints and gives coordinators the tools to manage them with better visibility, accountability, and workflow control.
 
-## ✨ Project Snapshot
+## ✨ Project Overview
 
 - 🎓 Students can register, log in, raise complaints, edit eligible requests, and track progress
 - 🧑‍💼 Coordinators can review complaints, update statuses, revert requests, and resolve cases
