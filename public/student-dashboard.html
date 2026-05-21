@@ -49,7 +49,7 @@
     </header>
     <!-- Main Content -->
     <main class="flex-1 p-4 sm:p-6 space-y-6">
-      
+
       <!-- Stats Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 sm:gap-6 mb-8">
         <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
@@ -266,7 +266,7 @@
                 <option value="medium">Medium - Needs attention soon</option>
                 <option value="high">High - Urgent, affects daily life</option>
               </select>
-              
+
             </div>
 
             <!-- Description -->
@@ -360,8 +360,19 @@
 
     if (!token || user.role !== "student") location.href = "auth.html";
 
-    document.getElementById("userName").textContent = user.fullName;
-    document.getElementById("userEmail").textContent = user.email;
+    // document.getElementById("userName").textContent = `Welcome ${user.fullName}`;
+    document.getElementById("userName").innerHTML = `
+      <span class="text-black">Welcome</span>
+      <span class="text-blue-600 font-bold">${user.fullName}</span>
+    `;
+
+    function maskEmail(email) {
+      const [name, domain] = email.split("@");
+
+      const visiblePart = name.slice(0, 4);
+      return `${visiblePart}****@${domain}`;
+    }
+    document.getElementById("userEmail").textContent = maskEmail(user.email);
 
     let allComplaints = [];
     let currentPage = 1;
